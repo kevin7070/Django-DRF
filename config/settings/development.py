@@ -41,7 +41,6 @@ INSTALLED_APPS += [
 common_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")  # noqa: F405
 MIDDLEWARE.insert(common_index, "corsheaders.middleware.CorsMiddleware")  # noqa: F405
 
-print(os.getenv("FRONTEND_DOMAINS"))
 FRONTEND_DOMAINS = [
     domain.strip()
     for domain in os.getenv("FRONTEND_DOMAINS", "http://localhost:3000").split(",")
