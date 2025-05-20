@@ -36,3 +36,18 @@ pip freeze > requirements.txt
 ```bash
 pip list --not-required freeze > requirements-core.txt
 ```
+
+# Run Production
+
+### Django
+
+```bash
+gunicorn config.wsgi:application --bind 127.0.0.1:8000
+```
+
+### Nuxt
+
+```bash
+npm run build
+PORT=3000 node .output/server/index.mjs
+```
