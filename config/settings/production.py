@@ -37,7 +37,7 @@ INSTALLED_APPS += [
 ]
 
 
-# django-cors-headers, insert after django.middleware.common
+# django-cors-headers, insert before django.middleware.common
 common_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")  # noqa: F405
 MIDDLEWARE.insert(common_index, "corsheaders.middleware.CorsMiddleware")  # noqa: F405
 
@@ -51,7 +51,7 @@ CORS_ALLOWED_ORIGINS = FRONTEND_DOMAINS  # Allow JS fetch from another origin
 CSRF_TRUSTED_ORIGINS = FRONTEND_DOMAINS  # Allow CSRF-protected form submission or fetch
 
 
-# WhiteNoise, insert before django.middleware.security
+# WhiteNoise, insert after django.middleware.security
 security_index = MIDDLEWARE.index("django.middleware.security.SecurityMiddleware")  # noqa: F405
 MIDDLEWARE.insert(security_index + 1, "whitenoise.middleware.WhiteNoiseMiddleware")  # noqa: F405
 
