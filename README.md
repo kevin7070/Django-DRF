@@ -1,53 +1,97 @@
-# Debian Package Requirements
+# How To Run
+
+## 1. Create a .env file in the root directory
+
+```bash
+# DJANGO_ENVIRONMENT=production
+DJANGO_ENVIRONMENT=development
+
+# Secret Keys
+JWT_SIGNING_KEY="your-really-secure-secret"
+DJANGO_SECRET_KEY="your-really-secure-secret"
+
+# Django hosts, use comma to separate
+DJANGO_ALLOWED_HOSTS="api.example.com, www.api.example.com, localhost, 127.0.0.1"
+
+# Postgresql Data
+POSTGRES_DB=""
+POSTGRES_USER=""
+POSTGRES_PASSWORD=""
+POSTGRES_HOST="127.0.0.1"
+POSTGRES_PORT="5432"
+
+# Frontend domains, use comma to separate, add Django hosts for admin panel
+FRONTEND_DOMAINS="https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com, http://localhost, http://127.0.0.1"
+```
+
+## 2. Install Requirements
+
+### OS Package (Debian)
 
 - libpq-div
 - python3-dev
 - build-essential
 
-# Requirements
+### Environment
 
-- nvm or node
-  - Node 18 or later
-- pyenv or python
-  - Python 3.11 or later
+- [ nvm ](https://github.com/nvm-sh/nvm) or [ node ](https://nodejs.org/en)
+  - version 18 or later
+- [ pyenv ](https://github.com/pyenv/pyenv) or [ python ](https://www.python.org/)
+  - version 3.11 or later
 
-# Reference
+### Dependencies
 
-### Generate secret key
-
-```bash
-openssl rand -base64 128 | tr -d '\n'
-```
-
-### To Install Python requirements
+_install in your python environment_
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### To Generate requirements.txt
+## 3. Run
+
+### Django
+
+```bash
+cd [path/to/project/root]
+python manage.py runserver
+```
+
+> Official Documentation:
+> [ Devemopment ](https://docs.djangoproject.com/en/5.2/intro/tutorial01/)
+> and
+> [ Production ](https://docs.djangoproject.com/en/5.1/howto/deployment/)
+
+### Nuxt
+
+```bash
+cd [path/to/project/root/frontend]
+npm instal
+npm run dev
+```
+
+> Official Documentation:
+> [ Development ](https://nuxt.com/docs/getting-started/installation)
+> and
+> [ Production ](https://nuxt.com/docs/getting-started/deployment)
+
+---
+
+# Reference
+
+### Generate your own secret key
+
+```bash
+openssl rand -base64 128 | tr -d '\n'
+```
+
+### Generate requirements.txt
 
 ```bash
 pip freeze > requirements.txt
 ```
 
-### To Generate requirements-core.txt
+### Generate requirements-core.txt
 
 ```bash
 pip list --not-required freeze > requirements-core.txt
-```
-
-# Run Production
-
-### Django
-
-```bash
-gunicorn config.wsgi:application --bind 127.0.0.1:8000
-```
-
-### Nuxt
-
-```bash
-npm run build
-PORT=3000 node .output/server/index.mjs
 ```
