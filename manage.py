@@ -3,11 +3,23 @@
 
 import os
 import sys
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+env_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+env = os.getenv("DJANGO_ENVIRONMENT", "development")
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
+    if env == "production":
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.production")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

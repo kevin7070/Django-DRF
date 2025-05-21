@@ -1,13 +1,7 @@
 import os
 from datetime import timedelta
-from pathlib import Path
-
-from dotenv import load_dotenv
 
 from .base import *  # noqa: F403
-
-env_path = Path(__file__).resolve().parent.parent.parent / ".development.env"
-load_dotenv(dotenv_path=env_path)
 
 DEBUG = True
 

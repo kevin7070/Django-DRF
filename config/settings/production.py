@@ -1,13 +1,7 @@
 import os
 from datetime import timedelta
-from pathlib import Path
-
-from dotenv import load_dotenv
 
 from .base import *  # noqa: F403
-
-env_path = Path(__file__).resolve().parent.parent.parent / ".production.env"
-load_dotenv(dotenv_path=env_path)
 
 DEBUG = False
 
@@ -41,7 +35,6 @@ INSTALLED_APPS += [
 common_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")  # noqa: F405
 MIDDLEWARE.insert(common_index, "corsheaders.middleware.CorsMiddleware")  # noqa: F405
 
-print(os.getenv("FRONTEND_DOMAINS"))
 FRONTEND_DOMAINS = [
     domain.strip()
     for domain in os.getenv("FRONTEND_DOMAINS").split(",")
