@@ -1,3 +1,21 @@
+# create .env.\* files first
+
+_.env.development_
+
+```
+NUXT_PUBLIC_API_BASE_URL=your-public-api-base-url
+NUXT_ENV_MODE=development
+```
+
+_.env.production_
+
+```
+NUXT_PUBLIC_API_BASE_URL=your-public-api-base-url
+NUXT_ENV_MODE=production
+```
+
+---
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
