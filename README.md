@@ -26,11 +26,23 @@ FRONTEND_DOMAINS="https://example.com, https://www.example.com, https://api.exam
 
 ## 2. Install Requirements
 
-### OS Package (Debian)
+### Database Configuration (PostgreSQL by Default)
 
+This project is currently configured to use **PostgreSQL**.
+If you prefer to use another database, such as **MariaDB** or others, feel free to update the settings under the `config/settings` folder.
+
+[Read more in the Django documentation.](https://docs.djangoproject.com/en/5.2/ref/databases/)
+
+OS Package required to build "psycopg2"
+
+**Debian 12**
 - libpq-div
 - python3-dev
 - build-essential
+
+**Fedora 42**
+- libpq-devel
+- python3-devel
 
 ### Environment
 
