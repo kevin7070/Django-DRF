@@ -74,6 +74,10 @@ REST_AUTH = {
     "JWT_AUTH_COOKIE": "jwt-auth",
 }
 
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserSerializer",
+}
+
 
 # Simple JWT
 SIMPLE_JWT = {
