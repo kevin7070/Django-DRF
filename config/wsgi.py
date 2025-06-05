@@ -25,6 +25,3 @@ else:
 
 
 application = get_wsgi_application()
-
-print(f"[wsgi.py] DJANGO_ENVIRONMENT = {env}")
-print(f"[wsgi.py] DJANGO_SETTINGS_MODULE = {os.environ['DJANGO_SETTINGS_MODULE']}")
