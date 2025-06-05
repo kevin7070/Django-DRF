@@ -170,6 +170,10 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 
 
@@ -242,20 +246,3 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
-
-
-class FixSameSiteMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        response = self.get_response(request)
-        for cookie in response.cookies.values():
-            if cookie.key in ["jwt-auth", "jwt-refresh-token"]:
-                print("[DEBUG] Fixing cookie:", cookie.key)
-                cookie["samesite"] = "None"
-                cookie["secure"] = True
-        return response
-
-
-MIDDLEWARE.append("config.settings.development.FixSameSiteMiddleware")
