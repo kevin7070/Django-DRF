@@ -21,7 +21,7 @@ POSTGRES_HOST="127.0.0.1"
 POSTGRES_PORT="5432"
 
 # Frontend domains, use comma to separate, add Django hosts for admin panel
-FRONTEND_DOMAINS="https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com, http://localhost, http://127.0.0.1"
+FRONTEND_DOMAINS="https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com, http://localhost:3000, http://127.0.0.1:3000"
 ```
 
 ## 2. Install Requirements
@@ -36,11 +36,13 @@ If you prefer to use another database, such as **MariaDB** or others, feel free 
 OS Package required to build "psycopg2"
 
 **Debian 12**
+
 - libpq-div
 - python3-dev
 - build-essential
 
 **Fedora 42**
+
 - libpq-devel
 - python3-devel
 
