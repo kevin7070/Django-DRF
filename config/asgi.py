@@ -25,6 +25,3 @@ else:
 
 
 application = get_asgi_application()
-
-print(f"[asgi.py] DJANGO_ENVIRONMENT = {env}")
-print(f"[asgi.py] DJANGO_SETTINGS_MODULE = {os.environ['DJANGO_SETTINGS_MODULE']}")
