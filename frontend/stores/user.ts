@@ -6,6 +6,7 @@ type User = {
   pk: number
   username: string
   email: string
+  phone: string
 }
 
 export const useUserStore = defineStore('user', () => {

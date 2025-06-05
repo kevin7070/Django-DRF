@@ -189,7 +189,7 @@ REST_AUTH = {
 }
 
 REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserSerializer",
+    "USER_DETAILS_SERIALIZER": "api.v1.auth.serializers.CustomUserDetailsSerializer",
 }
 
 
