@@ -13,6 +13,25 @@
             Sign in to your account
           </h2>
         </div>
+
+        <div v-if="userStore.user" class="flex justify-between">
+          <ul>
+            <li>{{ userStore.user.username }}</li>
+            <li>{{ userStore.user.email }}</li>
+            <li>{{ userStore.user.phone || "No phone" }}</li>
+          </ul>
+          <ul>
+            <li>
+              <button
+                @click="userStore.logout"
+                class="text-lime-600 rounded-lg bg-lime-200 px-2 py-0.5"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+
         <form
           @submit.prevent="handleLogin"
           class="space-y-6"
