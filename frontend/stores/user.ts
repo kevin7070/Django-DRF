@@ -1,30 +1,59 @@
-import { defineStore } from 'pinia'
-
 type LoginResponse = {
   key: string
 }
 
-export const useUserStore = defineStore('user', {
-  state: () => ({
-    token: null as string | null,
-    user: null as any,
-  }),
-  actions: {
-    async login(username: string, password: string) {
-      const config = useRuntimeConfig()
-      const response = await $fetch<LoginResponse>('/auth/dj-rest-auth/login', {
-        baseURL: config.public.apiBase,
-        method: 'POST',
-        body: { username, password },
+type User = {
+  pk: number
+  username: string
+  email: string
+}
+
+export const useUserStore = defineStore('user', () => {
+  const user = ref<User | null>(null)
+
+  const login = async (username: string, password: string) => {
+    await $fetch('/auth/nuxt/csrf', {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.apiBase,
+      credentials: 'include',
+    })
+
+    const csrftoken = useCookie('csrftoken').value
+
+    const res = await $fetch<LoginResponse>('/auth/nuxt/login', {
+      method: 'POST',
+      baseURL: useRuntimeConfig().public.apiBase,
+      credentials: 'include',
+      headers: {
+        'X-CSRFToken': csrftoken || '',
+      },
+      body: {
+        username,
+        password,
+      },
+    })
+
+    if (res) {
+      const userInfo = await $fetch<User>('/auth/nuxt/user', {
+        method: 'GET',
+        baseURL: useRuntimeConfig().public.apiBase,
+        credentials: 'include',
       })
+      user.value = userInfo
+    }
+  }
 
-      this.token = response.key
-      // Optionally fetch user info here
-    },
+  const logout = async () => {
+    await $fetch('/auth/nuxt/logout/', {
+      method: 'POST',
+      baseURL: useRuntimeConfig().public.apiBase,
+      credentials: 'include',
+    })
+    user.value = null
+  }
 
-    logout() {
-      this.token = null
-      this.user = null
-    },
-  },
-})
+  return { user, login, logout }
+}, {
+  persist: true,
+}
+)
