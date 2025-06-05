@@ -12,9 +12,12 @@ from api.v1.auth.serializers import CustomUserDetailsSerializer
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def set_csrf_token(request):
-    token = get_token(request)
-    print("[DEBUG] CSRF token sent:", token)
-    return JsonResponse({"detail": "CSRF cookie set"})
+    return JsonResponse(
+        {
+            "detail": "CSRF cookie set",
+            "csrfToken": get_token(request),
+        }
+    )
 
 
 class MyUserDetailsView(UserDetailsView):
