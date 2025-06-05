@@ -185,6 +185,7 @@ AUTHENTICATION_BACKENDS = (
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "jwt-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "jwt-refresh-token",
 }
 
 REST_AUTH_SERIALIZERS = {
@@ -195,7 +196,10 @@ REST_AUTH_SERIALIZERS = {
 # Simple JWT
 SIMPLE_JWT = {
     "AUTH_COOKIE": "jwt-auth",
-    "AUTH_HEADER_TYPES": ("JWT",),
+    "AUTH_COOKIE_REFRESH": "jwt-refresh-token",  # Refresh token cookie
+    "AUTH_COOKIE_SAMESITE": "None",
+    "AUTH_COOKIE_SECURE": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),  # For Nuxt
     "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
