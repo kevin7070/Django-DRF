@@ -1,7 +1,6 @@
 type LoginResponse = {
-  key: string
+  detail: string
 }
-
 type User = {
   pk: number
   username: string
@@ -13,30 +12,27 @@ export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
 
   const login = async (username: string, password: string) => {
-    await $fetch('/auth/nuxt/csrf', {
+    const { csrfToken } = await $fetch<{ csrfToken: string }>('/auth/nuxt/csrf/', {
       method: 'GET',
       baseURL: useRuntimeConfig().public.apiBase,
       credentials: 'include',
     })
 
-    const csrftoken = useCookie('csrftoken').value
+    // Debug
+    console.log("Fetched CSRF token", csrfToken)
 
-    const res = await $fetch<LoginResponse>('/auth/nuxt/login', {
+    const response = await $fetch<LoginResponse>('/auth/nuxt/login/', {
       method: 'POST',
       baseURL: useRuntimeConfig().public.apiBase,
+      body: { username, password },
       credentials: 'include',
       headers: {
-        'X-CSRFToken': csrftoken || '',
-      },
-      body: {
-        username,
-        password,
+        'X-CSRFToken': csrfToken,
       },
     })
 
-    if (res) {
-      const userInfo = await $fetch<User>('/auth/nuxt/user', {
-        method: 'GET',
+    if (response) {
+      const userInfo = await $fetch<User>('/auth/nuxt/user/', {
         baseURL: useRuntimeConfig().public.apiBase,
         credentials: 'include',
       })
@@ -53,8 +49,11 @@ export const useUserStore = defineStore('user', () => {
     user.value = null
   }
 
-  return { user, login, logout }
+  return {
+    user,
+    login,
+    logout,
+  }
 }, {
-  persist: true,
-}
-)
+  persist: true, // store in cookies
+})
