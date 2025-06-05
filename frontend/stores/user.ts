@@ -12,23 +12,17 @@ export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
 
   const login = async (username: string, password: string) => {
-    const { csrfToken } = await $fetch<{ csrfToken: string }>('/auth/nuxt/csrf/', {
+    await $fetch('/auth/nuxt/csrf/', {
       method: 'GET',
       baseURL: useRuntimeConfig().public.apiBase,
       credentials: 'include',
     })
-
-    // Debug
-    console.log("Fetched CSRF token", csrfToken)
 
     const response = await $fetch<LoginResponse>('/auth/nuxt/login/', {
       method: 'POST',
       baseURL: useRuntimeConfig().public.apiBase,
       body: { username, password },
       credentials: 'include',
-      headers: {
-        'X-CSRFToken': csrfToken,
-      },
     })
 
     if (response) {
