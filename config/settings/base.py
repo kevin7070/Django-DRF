@@ -158,8 +158,7 @@ INSTALLED_APPS += [
 # Django REST framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",  # cookie-based
-        "rest_framework_simplejwt.authentication.JWTAuthentication",  # token-based
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # for both Nuxt (cookie) + mobile (header)
     ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -185,32 +184,32 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
+# SimpleJWT
+SIMPLE_JWT = {
+    "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": (
+        "JWT",
+        "Bearer",
+    ),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    # For Nuxt/web using cookies:
+    "AUTH_COOKIE": "jwt-auth",
+    "AUTH_COOKIE_REFRESH": "jwt-refresh-token",
+    "AUTH_COOKIE_SAMESITE": "None",  # for cross-site
+    "AUTH_COOKIE_SECURE": True,  # only send over HTTPS
+    "AUTH_COOKIE_HTTP_ONLY": True,
+}
+
+
 # django-rest-auth
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "jwt-auth",
     "JWT_AUTH_REFRESH_COOKIE": "jwt-refresh-token",
-}
-
-REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "api.v1.auth.serializers.CustomUserDetailsSerializer",
-}
-
-
-# Simple JWT
-SIMPLE_JWT = {
-    "AUTH_COOKIE": "jwt-auth",
-    "AUTH_COOKIE_REFRESH": "jwt-refresh-token",  # Refresh token cookie
-    "AUTH_COOKIE_SAMESITE": "None",
-    "AUTH_COOKIE_SECURE": True,
-    "AUTH_HEADER_TYPES": ("Bearer",),  # For Nuxt
-    "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    # Add other options as needed
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
 

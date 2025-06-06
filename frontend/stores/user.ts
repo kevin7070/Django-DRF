@@ -1,12 +1,15 @@
-type LoginResponse = {
-  detail: string
-}
 type User = {
   pk: number
   username: string
   email: string
   phone: string
 }
+
+type LoginResponse = {
+  detail: string
+  user: User
+}
+
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
@@ -25,12 +28,8 @@ export const useUserStore = defineStore('user', () => {
       credentials: 'include',
     })
 
-    if (response) {
-      const userInfo = await $fetch<User>('/auth/nuxt/user/', {
-        baseURL: useRuntimeConfig().public.apiBase,
-        credentials: 'include',
-      })
-      user.value = userInfo
+    if (response.user) {
+      user.value = response.user
     }
   }
 
