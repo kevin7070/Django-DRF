@@ -158,6 +158,7 @@ INSTALLED_APPS += [
 # Django REST framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",  # for both Nuxt (cookie) + mobile (header)
     ],
     # Use Django's standard `django.contrib.auth` permissions,
