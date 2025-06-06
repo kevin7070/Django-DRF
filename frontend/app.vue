@@ -18,7 +18,6 @@
           <ul>
             <li>{{ userStore.user.username }}</li>
             <li>{{ userStore.user.email }}</li>
-            <li>{{ userStore.user.phone || "No phone" }}</li>
           </ul>
           <ul>
             <li>

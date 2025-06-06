@@ -2,7 +2,6 @@ type User = {
   pk: number
   username: string
   email: string
-  phone: string
 }
 
 type LoginResponse = {
