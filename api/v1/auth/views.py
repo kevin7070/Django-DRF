@@ -1,4 +1,5 @@
 from dj_rest_auth.views import LoginView, LogoutView
+from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view, permission_classes
@@ -21,15 +22,29 @@ class NuxtLoginView(LoginView):
         # Remove `access` and `refresh` from response data if they exist
         original_res.data.pop("access", None)
         original_res.data.pop("refresh", None)
+        # Change user data
         original_res.data["user"] = {
             "pk": user.pk,
             "username": user.username,
             "email": user.email,
         }
 
-        # Keep user infor only
         return original_res
 
 
 class NuxtLogoutView(LogoutView):
-    pass
+    def post(self, request, *args, **kwargs):
+        res = super().post(request, *args, **kwargs)
+
+        # Delete cookies
+        res.delete_cookie(
+            settings.REST_AUTH.get("JWT_AUTH_COOKIE"),
+            path="/",
+        )
+        res.delete_cookie(
+            settings.REST_AUTH.get("JWT_AUTH_REFRESH_COOKIE"),
+            path="/",
+        )
+        res.data = {"detail": "Logout successful"}
+
+        return res
