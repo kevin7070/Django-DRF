@@ -33,12 +33,16 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = async () => {
-    await $fetch('/auth/nuxt/logout/', {
-      method: 'POST',
-      baseURL: useRuntimeConfig().public.apiBase,
-      credentials: 'include',
-    })
-    user.value = null
+    try {
+      await $fetch('/auth/nuxt/logout/', {
+        method: 'POST',
+        baseURL: useRuntimeConfig().public.apiBase,
+        credentials: 'include',
+      })
+      user.value = null
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return {
