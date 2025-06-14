@@ -1,25 +1,25 @@
 # Core framework, pined in 5.x
-Django==5.2.3
+Django >=5.2.0, <5.3
 
 # Rest APIs
-djangorestframework
-djangorestframework_simplejwt
-dj-rest-auth
+djangorestframework >=3.16.0, <3.17
+djangorestframework_simplejwt >=5.5.0, <5.6
+dj-rest-auth >=7.0.0, <7.1
 
 # Database and filtering
-psycopg2
-django-filter
+psycopg2 >=2.9.0, <3.0
+django-filter >=25.0, <26.0
 
 # Useful middleware
-whitenoise
-django-cors-headers
+whitenoise >=6.9.0, <7.0
+django-cors-headers >=4.7.0, <4.8
 
 # Auth and permissions
-django-guardian
+django-guardian >=3.0.0, <3.1
 
 # Utilities
-python-dotenv
-Markdown
+python-dotenv >=1.1.0, <1.2
+Markdown >=3.8, <4.0
 
 # Web server
-gunicorn
+gunicorn >=23.0.0, <24.0
