@@ -4,12 +4,6 @@ type User = {
   email: string
 }
 
-type LoginResponse = {
-  detail: string
-  user: User
-}
-
-
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
 
@@ -20,7 +14,7 @@ export const useUserStore = defineStore('user', () => {
       credentials: 'include',
     })
 
-    const response = await $fetch<LoginResponse>('/auth/nuxt/login/', {
+    const response = await $fetch<{ detail: string, user: User }>('/auth/nuxt/login/', {
       method: 'POST',
       baseURL: useRuntimeConfig().public.apiBase,
       body: { username, password },
@@ -29,20 +23,18 @@ export const useUserStore = defineStore('user', () => {
 
     if (response.user) {
       user.value = response.user
+      console.log("Login successful");
     }
   }
 
   const logout = async () => {
-    try {
-      await $fetch('/auth/nuxt/logout/', {
-        method: 'POST',
-        baseURL: useRuntimeConfig().public.apiBase,
-        credentials: 'include',
-      })
-      user.value = null
-    } catch (e) {
-      console.error(e)
-    }
+    await $fetch('/auth/nuxt/logout/', {
+      method: 'POST',
+      baseURL: useRuntimeConfig().public.apiBase,
+      credentials: 'include',
+    })
+    user.value = null
+    console.log("Logout successful")
   }
 
   return {
