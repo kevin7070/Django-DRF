@@ -1,0 +1,25 @@
+# Core framework, pined in 5.x
+Django==5.2.3
+
+# Rest APIs
+djangorestframework
+djangorestframework_simplejwt
+dj-rest-auth
+
+# Database and filtering
+psycopg2
+django-filter
+
+# Useful middleware
+whitenoise
+django-cors-headers
+
+# Auth and permissions
+django-guardian
+
+# Utilities
+python-dotenv
+Markdown
+
+# Web server
+gunicorn

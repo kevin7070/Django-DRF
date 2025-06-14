@@ -61,7 +61,7 @@ OS Package required to build "psycopg2"
 _install in your python environment_
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.lock.txt
 ```
 
 ## 3. Run
@@ -101,14 +101,24 @@ npm run dev
 openssl rand -base64 128 | tr -d '\n'
 ```
 
-### Generate requirements.txt
+# Upgrade
+
+### Python package
 
 ```bash
-pip freeze > requirements.txt
+pip-compile requirements.in --upgrade
+pip install -r requirements.txt
 ```
 
-### Generate requirements-core.txt
+### Tests and Checks
 
 ```bash
-pip list --not-required freeze > requirements-core.txt
+python manage.py check
+python manage.py test
+```
+
+### Stage to lock file
+
+```bash
+pip freeze > requirements.lock.txt
 ```
