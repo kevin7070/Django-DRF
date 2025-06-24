@@ -40,16 +40,18 @@ class NuxtLogoutView(LogoutView):
 
         # Delete cookies
         if settings.REST_AUTH.get("JWT_AUTH_COOKIE"):
-            res.delete_cookie(
-                settings.REST_AUTH.get("JWT_AUTH_COOKIE"),
-                path="/",
-            )
+            if res and hasattr(res, "delete_cookie"):
+                res.delete_cookie(
+                    settings.REST_AUTH.get("JWT_AUTH_COOKIE"),
+                    path="/",
+                )
 
         if settings.REST_AUTH.get("JWT_AUTH_REFRESH_COOKIE"):
-            res.delete_cookie(
-                settings.REST_AUTH.get("JWT_AUTH_REFRESH_COOKIE"),
-                path="/",
-            )
+            if res and hasattr(res, "delete_cookie"):
+                res.delete_cookie(
+                    settings.REST_AUTH.get("JWT_AUTH_REFRESH_COOKIE"),
+                    path="/",
+                )
 
         res.data = {"detail": "Logout successful"}
 
