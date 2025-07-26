@@ -122,6 +122,7 @@
 <script setup lang="ts">
 // test
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
+import { useUserStore } from "~/stores/user";
 
 const identifier = ref("");
 const password = ref("");

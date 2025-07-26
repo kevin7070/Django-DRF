@@ -1,3 +1,5 @@
+import { useUserStore } from "~/stores/user";
+
 export async function useSafeFetch<T>(url: string, options: any = {}) {
   const baseURL = useRuntimeConfig().public.apiBase;
   const userStore = useUserStore();

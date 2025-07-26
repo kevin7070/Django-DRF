@@ -1,3 +1,5 @@
+import { defineStore } from 'pinia'
+
 type User = {
   pk: number
   username: string
