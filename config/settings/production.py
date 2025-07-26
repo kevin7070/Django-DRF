@@ -38,3 +38,16 @@ MIDDLEWARE.insert(security_index + 1, "whitenoise.middleware.WhiteNoiseMiddlewar
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [  # noqa: F405
     "rest_framework.renderers.JSONRenderer",
 ]
+
+
+# PostgreSQL
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "default_db_name"),
+        "USER": os.getenv("POSTGRES_USER", "default_username"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "default_mypassword"),
+        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+    }
+}

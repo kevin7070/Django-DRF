@@ -235,14 +235,10 @@ TEMPLATES = [  # noqa: F811
 AUTH_USER_MODEL = "accounts.User"
 
 
-# PostgreSQL
+# SQLite
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "default_db_name"),
-        "USER": os.getenv("POSTGRES_USER", "default_username"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "default_mypassword"),
-        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
