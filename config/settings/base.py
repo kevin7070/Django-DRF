@@ -233,12 +233,3 @@ TEMPLATES = [  # noqa: F811
 
 # Tell Django to use my custom User model
 AUTH_USER_MODEL = "accounts.User"
-
-
-# SQLite
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
