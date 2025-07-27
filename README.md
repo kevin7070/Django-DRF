@@ -61,12 +61,12 @@ OS Package required to build "psycopg2"
 _install in your python environment_
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.lock.txt
 ```
 
 ## 3. Run
-
-### Django
 
 ```bash
 cd [path/to/project/root]
@@ -77,21 +77,6 @@ python manage.py runserver
 > [ Devemopment ](https://docs.djangoproject.com/en/5.2/intro/tutorial01/)
 > and
 > [ Production ](https://docs.djangoproject.com/en/5.1/howto/deployment/)
-
-### Nuxt
-
-```bash
-cd [path/to/project/root/frontend]
-npm instal
-npm run dev
-```
-
-> Official Documentation:
-> [ Development ](https://nuxt.com/docs/getting-started/installation)
-> and
-> [ Production ](https://nuxt.com/docs/getting-started/deployment)
-
----
 
 # Reference
 
