@@ -7,7 +7,14 @@ from django.dispatch import receiver
 
 class ProductCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="children",
+    )
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,9 +23,18 @@ class ProductCategory(models.Model):
     class Meta:
         verbose_name = "Product Category"
         verbose_name_plural = "Product Categories"
+        unique_together = ("name", "parent")
+
+    def get_full_path(self):
+        names = [self.name]
+        p = self.parent
+        while p:
+            names.insert(0, p.name)
+            p = p.parent
+        return " / ".join(names)
 
     def __str__(self):
-        return self.name
+        return self.get_full_path()
 
 
 class Product(models.Model):
