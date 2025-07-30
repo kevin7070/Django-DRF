@@ -15,7 +15,7 @@ def set_csrf_token(request):
     return Response({"detail": "CSRF cookie set"}, status=status.HTTP_200_OK)
 
 
-class NuxtLoginView(LoginView):
+class LoginView(LoginView):
     def get_response(self):
         original_res = super().get_response()
 
@@ -34,7 +34,7 @@ class NuxtLoginView(LoginView):
         return original_res
 
 
-class NuxtLogoutView(LogoutView):
+class LogoutView(LogoutView):
     def post(self, request, *args, **kwargs):
         res = super().post(request, *args, **kwargs)
 
@@ -58,7 +58,7 @@ class NuxtLogoutView(LogoutView):
         return res
 
 
-class NuxtCookieTokenRefreshView(TokenRefreshView):
+class CookieTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh = request.COOKIES.get(settings.REST_AUTH.get("JWT_AUTH_REFRESH_COOKIE"))
 
