@@ -1,4 +1,5 @@
-from dj_rest_auth.views import LoginView, LogoutView
+from dj_rest_auth.views import LoginView as BaseLoginView
+from dj_rest_auth.views import LogoutView
 from django.conf import settings
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
@@ -15,7 +16,7 @@ def set_csrf_token(request):
     return Response({"detail": "CSRF cookie set"}, status=status.HTTP_200_OK)
 
 
-class LoginView(LoginView):
+class LoginView(BaseLoginView):
     def get_response(self):
         original_res = super().get_response()
 
