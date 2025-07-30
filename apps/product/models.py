@@ -31,7 +31,7 @@ class ProductCategory(models.Model):
         while p:
             names.insert(0, p.name)
             p = p.parent
-        return " / ".join(names)
+        return " → ".join(names)
 
     def __str__(self):
         return self.get_full_path()
