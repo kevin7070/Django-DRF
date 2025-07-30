@@ -4,14 +4,9 @@ from rest_framework import serializers
 from accounts.models import User
 
 
-class CustomUserSerializer(UserDetailsSerializer):
+class UserSerializer(UserDetailsSerializer):
     phone = serializers.CharField(required=False)
 
     class Meta(UserDetailsSerializer.Meta):
         model = User
-        fields = (
-            "id",
-            "username",
-            "email",
-            "phone",
-        )
+        fields = "__all__"
