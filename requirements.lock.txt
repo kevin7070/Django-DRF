@@ -11,6 +11,7 @@ djangorestframework_simplejwt==5.5.0
 gunicorn==23.0.0
 Markdown==3.8
 packaging==25.0
+pillow==11.3.0
 pip-tools==7.4.1
 psycopg2==2.9.10
 Pygments==2.19.1

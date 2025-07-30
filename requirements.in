@@ -23,3 +23,6 @@ Markdown >=3.8, <4.0
 
 # Web server
 gunicorn >=23.0.0, <24.0
+
+# Pillow
+pillow >=11.3.0, <11.4
