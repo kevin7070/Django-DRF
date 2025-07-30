@@ -152,6 +152,7 @@ INSTALLED_APPS += [  # noqa: F405
 INSTALLED_APPS += [
     "accounts",
     "api",
+    "apps.product",
 ]
 
 

@@ -1,0 +1,63 @@
+import uuid
+
+from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+
+class ProductCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Product Category"
+        verbose_name_plural = "Product Categories"
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    sku = models.CharField("SKU", max_length=100, unique=True)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    category = models.ForeignKey(
+        ProductCategory, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    image = models.ImageField(
+        upload_to="apps/product/images/%Y/%m/", blank=True, null=True
+    )
+
+    cost_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    stock_quantity = models.IntegerField(default=0)
+    low_stock_alert = models.PositiveIntegerField(default=0)
+
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
+
+    def __str__(self):
+        return f"[{self.sku}] {self.name}" if self.sku else self.name
+
+    @property
+    def is_low_stock(self) -> bool:
+        return self.stock_quantity <= self.low_stock_alert
+
+
+@receiver(post_delete, sender=Product)
+def delete_product_image(sender, instance, **kwargs):
+    if instance.image:
+        instance.image.delete(save=False)
