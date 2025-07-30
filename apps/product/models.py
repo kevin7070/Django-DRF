@@ -1,3 +1,4 @@
+import os
 import uuid
 
 from django.db import models
@@ -76,4 +77,6 @@ class Product(models.Model):
 @receiver(post_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
     if instance.image:
-        instance.image.delete(save=False)
+        image_path = instance.image.path
+        if os.path.isfile(image_path):
+            instance.image.delete(save=False)
