@@ -63,7 +63,9 @@ _install in your python environment_
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.lock.txt
+pip install pip-tools
+pip-compile requirements.in --upgrade
+pip install -r requirements.txt
 ```
 
 ## 3. Run
@@ -88,11 +90,12 @@ openssl rand -base64 128 | tr -d '\n'
 
 # Upgrade
 
-### Python package
+### Python package Upgrade
+
+#### This will automatically generate a requirements.txt file with the latest versions based on the requirements.in specification
 
 ```bash
 pip-compile requirements.in --upgrade
-pip install -r requirements.txt
 ```
 
 ### Tests and Checks
@@ -100,10 +103,4 @@ pip install -r requirements.txt
 ```bash
 python manage.py check
 python manage.py test
-```
-
-### Stage to lock file
-
-```bash
-pip freeze > requirements.lock.txt
 ```
