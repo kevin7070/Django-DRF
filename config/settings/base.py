@@ -147,6 +147,7 @@ INSTALLED_APPS += [  # noqa: F405
     "django_filters",
     "guardian",
     "dj_rest_auth",
+    "drf_spectacular",  # API documentation
 ]
 # apps
 INSTALLED_APPS += [
@@ -175,6 +176,8 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
+    # API documentation
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
