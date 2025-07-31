@@ -20,6 +20,7 @@ django-guardian >=3.0.0, <3.1
 # Utilities
 python-dotenv >=1.1.0, <1.2
 Markdown >=3.8, <4.0
+drf-spectacular ==0.28.0
 
 # Web server
 gunicorn >=23.0.0, <24.0
