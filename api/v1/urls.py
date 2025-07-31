@@ -21,6 +21,6 @@ urlpatterns = [
     path("auth/", include("api.v1.auth.urls")),
     path("product/", include("api.v1.product.urls")),
     # API documentation for development
-    path("schema/", PrivateSpectacularAPIView.as_view()),
+    path("schema/", PrivateSpectacularAPIView.as_view(), name="schema"),
     path("docs/", PrivateSpectacularSwaggerView.as_view(url_name="schema")),
 ]
