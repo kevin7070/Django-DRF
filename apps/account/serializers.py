@@ -1,7 +1,7 @@
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 
-from accounts.models import User
+from .models import User
 
 
 class UserSerializer(UserDetailsSerializer):

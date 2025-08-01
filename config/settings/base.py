@@ -151,9 +151,9 @@ INSTALLED_APPS += [  # noqa: F405
 ]
 # apps
 INSTALLED_APPS += [
-    "accounts",
-    "api.v1",
-    "apps.product",
+    "api.v1.apps.ApiConfig",
+    "apps.account.apps.AccountConfig",
+    "apps.product.apps.ProductConfig",
 ]
 
 
@@ -183,7 +183,7 @@ REST_FRAMEWORK = {
 
 # Django Guardian
 AUTHENTICATION_BACKENDS = (
-    "accounts.auth.UsernameOrEmailBackend",
+    "apps.account.auth.UsernameOrEmailBackend",
     "django.contrib.auth.backends.ModelBackend",
     "guardian.backends.ObjectPermissionBackend",
 )
@@ -236,4 +236,4 @@ TEMPLATES = [  # noqa: F811
 
 
 # Tell Django to use my custom User model
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "account.User"
