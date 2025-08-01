@@ -1,5 +1,62 @@
-.venv
-**/__pycache__/
-staticfiles
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django migration files (optional, if you reset often)
+# **Keep if your migrations are part of your repo**
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Logs
+*.log
+
+# Local env
 .env
-db.sqlite3
+.env.*  # e.g. .env.dev, .env.production
+
+# Database (if SQLite and dev only)
+*.sqlite3
+
+# Redis dump (if you're running redis locally)
+dump.rdb
+
+# Static and media (if using collectstatic to populate in deployment)
+staticfiles/
+static/
+media/
+public/static/
+public/media/
+
+# If using Django WhiteNoise + collectstatic in production, keep this
+# and use `python manage.py collectstatic` on deploy
+
+# Virtual env
+venv/
+.venv/
+
+# macOS
+.DS_Store
+
+# VSCode / JetBrains
+.vscode/
+.idea/
+
+# Coverage and test reports
+.coverage
+htmlcov/
+coverage.xml
+
+# Pytest cache
+.pytest_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Node modules (if using npm or yarn for frontend)
+node_modules/
