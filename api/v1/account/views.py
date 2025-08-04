@@ -1,13 +1,11 @@
-from django.contrib.auth import get_user_model
-from rest_framework import permissions, viewsets
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import CreateAPIView
 
 from apps.account.constants import ADMIN_PERMISSION_DEFAULT
 from apps.account.models import CompanyRole
-from apps.account.serializers import CompanySerializer, UserSerializer
-
-User = get_user_model()
+from apps.account.serializers import (
+    CompanySerializer,
+)
 
 
 class CompanyCreateView(CreateAPIView):
@@ -23,35 +21,10 @@ class CompanyCreateView(CreateAPIView):
 
         admin_role = CompanyRole.objects.create(
             company=company,
-            name="Admin",
+            name="Director",
             permissions=ADMIN_PERMISSION_DEFAULT,
+            is_protected=True,
         )
         user.company = company
         user.company_role = admin_role
         user.save()
-
-
-class IsCompanyManager(permissions.BasePermission):
-    def has_permission(self, request, view):
-        user = request.user
-        return (
-            user.is_authenticated
-            and hasattr(user, "company_role")
-            and user.company_role
-            and user.company_role.permissions.get("user", {}).get("manage", False)
-        )
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    permission_classes = [IsCompanyManager, permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        return User.objects.filter(company=self.request.user.company)
-
-    def perform_update(self, serializer):
-        target_user = self.get_object()
-        actor = self.request.user
-        if target_user.company != actor.company:
-            raise PermissionDenied("Permission denied")
-        serializer.save()
