@@ -56,7 +56,6 @@ class User(UUIDBaseModel, AbstractUser):
 
 class Company(UUIDTimestampModel):
     name = models.CharField(max_length=100)
-    address = models.TextField(blank=True, null=True)
     verification_documant = models.FileField(
         upload_to="company/verification_documant/", blank=True, null=True
     )
@@ -72,6 +71,32 @@ class Company(UUIDTimestampModel):
 
     def __str__(self):
         return self.name
+
+
+class CompanyAddress(UUIDTimestampModel):
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, related_name="addresses"
+    )
+
+    address = models.CharField(max_length=255)
+    apt_suite = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255)
+    province = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+
+    is_mailing_address = models.BooleanField(default=False)
+
+    @property
+    def full_address(self):
+        parts = [self.address]
+        if self.apt_suite:
+            parts.append(f"Unit {self.apt_suite}")
+        parts += [self.city, self.province, self.postal_code, self.country]
+        return ", ".join(filter(None, parts))
+
+    def __str__(self):
+        return self.full_address
 
 
 class CompanyRole(UUIDTimestampModel):

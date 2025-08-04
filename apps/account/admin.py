@@ -35,7 +35,7 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ("name", "address")
+    list_display = ("name",)
 
 
 @admin.register(CompanyRole)
