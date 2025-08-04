@@ -1,13 +1,13 @@
 import os
-import uuid
 
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
+from apps.utils.base_model import UUIDTimestampModel
 
-class ProductCategory(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+class ProductCategory(UUIDTimestampModel):
     name = models.CharField(max_length=100)
     parent = models.ForeignKey(
         "self",
@@ -18,8 +18,6 @@ class ProductCategory(models.Model):
     )
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Product Category"
@@ -38,8 +36,7 @@ class ProductCategory(models.Model):
         return self.get_full_path()
 
 
-class Product(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Product(UUIDTimestampModel):
     sku = models.CharField("SKU", max_length=100, unique=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -58,8 +55,6 @@ class Product(models.Model):
     low_stock_alert = models.PositiveIntegerField(default=0)
 
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["name"]

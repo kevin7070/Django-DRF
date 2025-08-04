@@ -2,6 +2,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from apps.utils.base_model import UUIDBaseModel, UUIDTimestampModel
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -23,7 +25,7 @@ class UserManager(BaseUserManager):
         return self.create_user(username, email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class User(UUIDBaseModel, AbstractUser):
     company = models.ForeignKey(
         "Company",
         on_delete=models.SET_NULL,
@@ -51,7 +53,7 @@ class User(AbstractUser):
         return self.username
 
 
-class Company(models.Model):
+class Company(UUIDTimestampModel):
     name = models.CharField(max_length=100)
     address = models.TextField(blank=True, null=True)
 
@@ -59,20 +61,10 @@ class Company(models.Model):
         return self.name
 
 
-class CompanyRole(models.Model):
+class CompanyRole(UUIDTimestampModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="roles")
     name = models.CharField(max_length=50)  # e.g., admin, user, vip
     permissions = models.JSONField(default=dict)
-    # data = {
-    #   "user": {
-    #     "manage": false
-    #   },
-    #   "product": {
-    #     "view": true,
-    #     "edit": false,
-    #     "delete": false
-    #   }
-    # }
 
     def has_perm(self, module: str, action: str) -> bool:
         return self.permissions.get(module, {}).get(action, False)
