@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated
 
 from apps.account.models import CompanyRole
-from apps.account.permissions import IsCompanyManager, IsSameCompanyObject
+from apps.account.permissions import IsSameCompanyObject
 from apps.account.serializers import (
     CompanyRoleSerializer,
     UserSerializer,
@@ -14,8 +13,6 @@ from apps.account.serializers import (
 class DirectorCompanyRoleViewSet(viewsets.ModelViewSet):
     serializer_class = CompanyRoleSerializer
     permission_classes = [
-        IsAuthenticated,
-        IsCompanyManager,
         IsSameCompanyObject,
     ]
 
@@ -40,8 +37,6 @@ User = get_user_model()
 class DirectorUserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [
-        IsAuthenticated,
-        IsCompanyManager,
         IsSameCompanyObject,
     ]
 
