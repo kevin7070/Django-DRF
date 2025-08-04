@@ -15,10 +15,10 @@ class UserSerializer(UserDetailsSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = "__all__"
+        fields = ("id", "name", "address")
 
 
 class CompanyRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyRole
-        fields = "__all__"
+        fields = ("id", "name", "permissions", "is_protected")
