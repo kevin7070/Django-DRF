@@ -1,10 +1,22 @@
 from django.contrib.auth import get_user_model
 from rest_framework import permissions, viewsets
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.generics import CreateAPIView
 
-from apps.account.serializers import UserSerializer
+from apps.account.serializers import CompanySerializer, UserSerializer
 
 User = get_user_model()
+
+
+class CompanyCreateView(CreateAPIView):
+    serializer_class = CompanySerializer
+
+    def perform_create(self, serializer):
+        if self.request.user.company:
+            raise PermissionDenied("Permission denied")
+        company = serializer.save()
+        self.request.user.company = company
+        self.request.user.save()
 
 
 class IsCompanyManager(permissions.BasePermission):
