@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User
+from .models import Company, CompanyRole, User
 
 
 # Register your models here.
@@ -31,3 +31,15 @@ class UserAdmin(BaseUserAdmin):
         "is_staff",
         "is_superuser",
     )
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ("name", "address")
+
+
+@admin.register(CompanyRole)
+class CompanyRoleAdmin(admin.ModelAdmin):
+    list_display = ("company", "name")
+    search_fields = ("name",)
+    list_filter = ("company",)

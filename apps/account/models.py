@@ -24,6 +24,20 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    company = models.ForeignKey(
+        "Company",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users",
+    )
+    company_role = models.ForeignKey(
+        "CompanyRole",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users",
+    )
     email = models.EmailField(unique=True, null=False, blank=False)  # unique
     phone = models.CharField(max_length=12, null=True, blank=True)
     mobile = models.CharField(max_length=12, null=True, blank=True)
@@ -35,3 +49,36 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Company(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class CompanyRole(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="roles")
+    name = models.CharField(max_length=50)  # e.g., admin, user, vip
+    permissions = models.JSONField(default=dict)
+    # data = {
+    #   "user": {
+    #     "manage": false
+    #   },
+    #   "product": {
+    #     "view": true,
+    #     "edit": false,
+    #     "delete": false
+    #   }
+    # }
+
+    def has_perm(self, module: str, action: str) -> bool:
+        return self.permissions.get(module, {}).get(action, False)
+
+    # usage
+    # check if user.company_role and user.company_role.has_perm("product", "edit")
+
+    def __str__(self):
+        return f"{self.company.name} - {self.name}"
