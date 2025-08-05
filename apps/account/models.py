@@ -57,8 +57,8 @@ class User(UUIDBaseModel, AbstractUser):
 
 class Company(UUIDTimestampModel):
     name = models.CharField(max_length=100)
-    verification_documant = models.FileField(
-        upload_to="company/verification_documant/", blank=True, null=True
+    verification_document = models.FileField(
+        upload_to="company/verification_document/", blank=True, null=True
     )
     is_verified = models.BooleanField(default=False)
     verified = models.DateTimeField(null=True, blank=True)

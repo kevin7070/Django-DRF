@@ -36,7 +36,7 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "verification_documant",
+            "verification_document",
             "is_verified",
             "verified",
             "verified_by",
