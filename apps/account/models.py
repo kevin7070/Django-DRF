@@ -3,6 +3,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from apps.account.constants import USER_PERMISSION_DEFAULT
 from apps.utils.base_model import UUIDBaseModel, UUIDTimestampModel
 
 
@@ -102,7 +103,7 @@ class CompanyAddress(UUIDTimestampModel):
 class CompanyRole(UUIDTimestampModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="roles")
     name = models.CharField(max_length=50)  # e.g., admin, user, vip
-    permissions = models.JSONField(default=dict)
+    permissions = models.JSONField(default=USER_PERMISSION_DEFAULT)
     is_protected = models.BooleanField(default=False)
 
     def has_perm(self, module: str, action: str) -> bool:
