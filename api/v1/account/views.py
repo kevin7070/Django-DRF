@@ -1,3 +1,5 @@
+import copy
+
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import CreateAPIView
 
@@ -22,7 +24,7 @@ class CompanyCreateView(CreateAPIView):
         admin_role = CompanyRole.objects.create(
             company=company,
             name="Director",
-            permissions=ADMIN_PERMISSION_DEFAULT,
+            permissions=copy.deepcopy(ADMIN_PERMISSION_DEFAULT),
             is_protected=True,
         )
         user.company = company
