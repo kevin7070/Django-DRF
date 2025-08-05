@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Company, CompanyRole, User
+from .models import Company, CompanyAddress, CompanyRole, User
 
 
 # Register your models here.
@@ -35,7 +35,49 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = (
+        "name",
+        "is_verified",
+        "verified",
+        "verified_by",
+        "has_mailing_address",
+    )
+    list_filter = ("is_verified", "verified_by")
+    search_fields = ("name",)
+    readonly_fields = ("verified", "verified_by")
+
+    def has_mailing_address(self, obj):
+        return obj.addresses.filter(is_mailing_address=True).exists()
+
+    has_mailing_address.boolean = True
+    has_mailing_address.short_description = "Mailing Address?"
+
+
+@admin.register(CompanyAddress)
+class CompanyAddressAdmin(admin.ModelAdmin):
+    list_display = (
+        "company",
+        "address",
+        "apt_suite",
+        "city",
+        "province",
+        "postal_code",
+        "country",
+        "is_mailing_address",
+    )
+    list_filter = (
+        "company",
+        "city",
+        "province",
+        "country",
+        "is_mailing_address",
+    )
+    search_fields = (
+        "address",
+        "apt_suite",
+        "city",
+        "postal_code",
+    )
 
 
 @admin.register(CompanyRole)
