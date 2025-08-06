@@ -4,7 +4,7 @@ from .base import *  # noqa: F403
 
 DEBUG = True
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "testing123")
 
 # django-cors-headers
 common_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")  # noqa: F405
