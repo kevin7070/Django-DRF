@@ -21,7 +21,8 @@ POSTGRES_HOST="127.0.0.1"
 POSTGRES_PORT="5432"
 
 # Frontend domains, use comma to separate, add Django hosts for admin panel
-FRONTEND_DOMAINS="https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com, http://localhost:3000, http://127.0.0.1:3000"
+# sample: "https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com"
+FRONTEND_DOMAINS=""
 
 # Django Admin Path to exposing in URL, keep it empty to default `/admin/`
 DJANGO_ADMIN_PATH=supersecret

@@ -12,7 +12,9 @@ MIDDLEWARE.insert(common_index, "corsheaders.middleware.CorsMiddleware")  # noqa
 
 FRONTEND_DOMAINS = [
     domain.strip()
-    for domain in os.getenv("FRONTEND_DOMAINS").split(",")
+    for domain in os.getenv(
+        "FRONTEND_DOMAINS", "http://localhost:3000, http://127.0.0.1:3000"
+    ).split(",")
     if domain.strip()
 ]
 

@@ -12,7 +12,7 @@ MIDDLEWARE.insert(common_index, "corsheaders.middleware.CorsMiddleware")  # noqa
 
 FRONTEND_DOMAINS = [
     domain.strip()
-    for domain in os.getenv("FRONTEND_DOMAINS").split(",")
+    for domain in os.getenv("FRONTEND_DOMAINS", "").split(",")
     if domain.strip()
 ]
 
