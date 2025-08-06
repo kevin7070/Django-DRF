@@ -12,6 +12,8 @@ attrs==25.3.0
     # via
     #   jsonschema
     #   referencing
+coverage[toml]==7.10.2
+    # via pytest-cov
 dj-rest-auth==7.0.1
     # via -r requirements.in
 django==5.2.4
@@ -44,6 +46,8 @@ gunicorn==23.0.0
     # via -r requirements.in
 inflection==0.5.1
     # via drf-spectacular
+iniconfig==2.1.0
+    # via pytest
 jsonschema==4.25.0
     # via drf-spectacular
 jsonschema-specifications==2025.4.1
@@ -51,13 +55,30 @@ jsonschema-specifications==2025.4.1
 markdown==3.8.2
     # via -r requirements.in
 packaging==25.0
-    # via gunicorn
+    # via
+    #   gunicorn
+    #   pytest
 pillow==11.3.0
     # via -r requirements.in
+pluggy==1.6.0
+    # via
+    #   pytest
+    #   pytest-cov
 psycopg2==2.9.10
     # via -r requirements.in
+pygments==2.19.2
+    # via pytest
 pyjwt==2.10.1
     # via djangorestframework-simplejwt
+pytest==8.4.1
+    # via
+    #   -r requirements.in
+    #   pytest-cov
+    #   pytest-django
+pytest-cov==6.2.1
+    # via -r requirements.in
+pytest-django==4.11.1
+    # via -r requirements.in
 python-dotenv==1.1.1
     # via -r requirements.in
 pyyaml==6.0.2
