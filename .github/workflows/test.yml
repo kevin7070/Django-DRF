@@ -26,7 +26,7 @@ jobs:
 
     env:
       DJANGO_SECRET_KEY: testkey
-      FRONTEND_DOMAINS: localhost,127.0.0.1
+      FRONTEND_DOMAINS: "http://localhost:3000, http://127.0.0.1:3000"
       POSTGRES_DB: testdb
       POSTGRES_USER: testuser
       POSTGRES_PASSWORD: testpass
