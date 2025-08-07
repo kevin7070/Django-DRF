@@ -105,7 +105,7 @@ class CompanyAddress(UUIDTimestampModel):
     def full_address(self):
         parts = [self.address]
         if self.apt_suite:
-            parts.append(f"Unit {self.apt_suite}")
+            parts.append(self.apt_suite)
         parts += [self.city, self.province, self.postal_code, self.country]
         return ", ".join(filter(None, parts))
 
