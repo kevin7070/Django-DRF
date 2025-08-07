@@ -31,7 +31,6 @@ jobs:
       POSTGRES_USER: testuser
       POSTGRES_PASSWORD: testpass
       POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
 
     steps:
       - uses: actions/checkout@v4
