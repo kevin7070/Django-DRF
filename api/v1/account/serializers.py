@@ -6,9 +6,10 @@ from apps.account.serializers import CompanyAddress, CompanyAddressBaseSerialize
 class CompanyAddressSerializer(CompanyAddressBaseSerializer):
     def validate(self, data):
         is_mailing = data.get("is_mailing_address", False)
-        company = (
-            data.get("company") or self.instance.company if self.instance else None
-        )
+
+        company = data.get("company")
+        if not company and self.instance:
+            company = self.instance.company
 
         if is_mailing and company:
             qs = CompanyAddress.objects.filter(

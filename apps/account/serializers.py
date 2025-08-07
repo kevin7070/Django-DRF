@@ -15,16 +15,7 @@ class UserSerializer(UserDetailsSerializer):
 class CompanyAddressBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyAddress
-        fields = (
-            "id",
-            "address",
-            "apt_suite",
-            "city",
-            "province",
-            "postal_code",
-            "country",
-            "is_mailing_address",
-        )
+        fields = "__all__"
 
 
 class CompanySerializer(serializers.ModelSerializer):
