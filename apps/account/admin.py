@@ -7,30 +7,60 @@ from .models import Company, CompanyAddress, CompanyRole, User
 # Register your models here.
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    fieldsets = BaseUserAdmin.fieldsets + (
+    fieldsets = (
+        (None, {"fields": ("email", "username", "password")}),
         (
-            "Additional Info",
-            {"fields": ("phone",)},
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                )
+            },
         ),
-    )
-    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
         (
             "Additional Info",
             {
                 "fields": (
-                    "email",
                     "phone",
+                    "mobile",
+                    "profile_picture",
+                    "company",
+                    "company_role",
                 )
             },
         ),
     )
-    list_display = (
-        "username",
-        "email",
-        "phone",
-        "is_staff",
-        "is_superuser",
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "username",
+                    "phone",
+                    "mobile",
+                    "profile_picture",
+                    "company",
+                    "company_role",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_active",
+                ),
+            },
+        ),
     )
+
+    list_display = ("email", "username", "phone", "is_staff", "is_superuser")
+    search_fields = ("email", "username", "phone")
+    ordering = ("email",)
 
 
 @admin.register(Company)

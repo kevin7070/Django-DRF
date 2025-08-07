@@ -183,7 +183,6 @@ REST_FRAMEWORK = {
 
 # Django Guardian
 AUTHENTICATION_BACKENDS = (
-    "apps.account.auth.UsernameOrEmailBackend",
     "django.contrib.auth.backends.ModelBackend",
     "guardian.backends.ObjectPermissionBackend",
 )
