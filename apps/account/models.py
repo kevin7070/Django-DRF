@@ -7,6 +7,11 @@ from apps.account.constants import USER_PERMISSION_DEFAULT
 from apps.utils.base_model import UUIDBaseModel, UUIDTimestampModel
 
 
+def default_role_permissions():
+    # return a fresh copy so each instance gets its own dict
+    return USER_PERMISSION_DEFAULT.copy()
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -116,7 +121,7 @@ class CompanyAddress(UUIDTimestampModel):
 class CompanyRole(UUIDTimestampModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="roles")
     name = models.CharField(max_length=50)  # e.g., admin, user, vip
-    permissions = models.JSONField(default=lambda: USER_PERMISSION_DEFAULT.copy())
+    permissions = models.JSONField(default=default_role_permissions)
     is_protected = models.BooleanField(default=False)
 
     def has_perm(self, module: str, action: str) -> bool:
