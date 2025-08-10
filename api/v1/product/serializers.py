@@ -1,16 +1,14 @@
 from rest_framework import serializers
 
-from apps.product.serializers import (
-    ProductCategorySerializer as BaseProductCategorySerializer,
-)
+from api.v1.product.serializers_base import ProductCategorySerializer
 
 
-class ProductCategoryTreeSerializer(BaseProductCategorySerializer):
+class ProductCategoryTreeSerializer(ProductCategorySerializer):
     full_path = serializers.SerializerMethodField()
     has_children = serializers.SerializerMethodField()
     children = serializers.SerializerMethodField()
 
-    class Meta(BaseProductCategorySerializer.Meta):
+    class Meta(ProductCategorySerializer.Meta):
         fields = ("id", "name", "full_path", "has_children", "children")
 
     def get_full_path(self, obj) -> str:

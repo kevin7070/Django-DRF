@@ -5,9 +5,8 @@ from rest_framework.generics import CreateAPIView
 
 from apps.account.constants import ADMIN_PERMISSION_DEFAULT
 from apps.account.models import CompanyRole
-from apps.account.serializers import (
-    CompanySerializer,
-)
+
+from .serializers_base import CompanySerializer
 
 
 class CompanyCreateView(CreateAPIView):

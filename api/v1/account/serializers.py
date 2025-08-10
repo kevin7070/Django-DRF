@@ -1,28 +1,33 @@
+from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 
-from apps.account.serializers import CompanyAddress, CompanyAddressBaseSerializer
+from apps.account.models import User
 
 
-class CompanyAddressSerializer(CompanyAddressBaseSerializer):
-    def validate(self, data):
-        is_mailing = data.get("is_mailing_address", False)
+class UserSerializer(UserDetailsSerializer):
+    phone = serializers.CharField(required=False)
 
-        company = data.get("company")
-        if not company and self.instance:
-            company = self.instance.company
+    class Meta(UserDetailsSerializer.Meta):
+        model = User
+        fields = UserDetailsSerializer.Meta.fields + (
+            "company",
+            "company_role",
+            "phone",
+            "mobile",
+            "profile_picture",
+        )
 
-        if is_mailing and company:
-            qs = CompanyAddress.objects.filter(
-                company=company,
-                is_mailing_address=True,
+    def get_fields(self):
+        fields = super().get_fields()
+        # Always expose a read-only username field
+        if "username" not in fields:
+            fields["username"] = serializers.CharField(read_only=True)
+        return fields
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if "username" not in data:
+            data["username"] = (
+                getattr(instance, "username", None) or instance.get_username()
             )
-            if self.instance:
-                qs = qs.exclude(pk=self.instance.pk)
-            if qs.exists():
-                raise serializers.ValidationError(
-                    {
-                        "is_mailing_address": "Only one mailing address is allowed per company."
-                    }
-                )
-
         return data
