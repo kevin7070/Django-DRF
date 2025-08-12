@@ -11,7 +11,7 @@ JWT_SIGNING_KEY="your-really-secure-secret"
 DJANGO_SECRET_KEY="your-really-secure-secret"
 
 # Django hosts, use comma to separate
-DJANGO_ALLOWED_HOSTS="api.example.com, www.api.example.com, localhost, 127.0.0.1"
+DJANGO_ALLOWED_HOSTS="localhost, 127.0.0.1"
 
 # Postgresql Data
 POSTGRES_DB=""
@@ -22,7 +22,7 @@ POSTGRES_PORT="5432"
 
 # Frontend domains, use comma to separate, add Django hosts for admin panel
 # sample: "https://example.com, https://www.example.com, https://api.example.com, https://www.api.example.com"
-FRONTEND_DOMAINS=""
+FRONTEND_DOMAINS="http://localhost:3000"
 
 # Django Admin Path to exposing in URL, keep it empty to default `/admin/`
 DJANGO_ADMIN_PATH=supersecret
