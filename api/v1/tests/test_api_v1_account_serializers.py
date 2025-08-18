@@ -1,10 +1,9 @@
 import pytest
-from django.core.files.uploadedfile import SimpleUploadedFile
-from rest_framework.exceptions import ValidationError
-
 from api.v1.account.serializers import UserSerializer
 from api.v1.account.serializers_base import CompanyAddressSerializer
 from apps.account.models import Company, CompanyAddress, CompanyRole, User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from rest_framework.exceptions import ValidationError
 
 
 @pytest.mark.django_db
@@ -95,7 +94,6 @@ def test_user_serializer_includes_expected_fields():
         username="helloworld",
         email="hello@world.ca",
         password="pass1234",
-        phone="111-111-1111",
         mobile="222-222-2222",
         company=company,
         company_role=role,
@@ -106,7 +104,7 @@ def test_user_serializer_includes_expected_fields():
 
     # Fields from dj_rest_auth.UserDetailsSerializer are typically:
     # ("pk", "username", "email", "first_name", "last_name")
-    # Our subclass adds: company, company_role, phone, mobile, profile_picture
+    # Our subclass adds: company, company_role, mobile, profile_picture
     for key in [
         "pk",
         "username",
@@ -115,7 +113,6 @@ def test_user_serializer_includes_expected_fields():
         "last_name",
         "company",
         "company_role",
-        "phone",
         "mobile",
         "profile_picture",
     ]:
@@ -141,29 +138,6 @@ def test_user_serializer_relations_are_primary_keys():
 
     assert data["company"] == str(company.pk) or data["company"] == company.pk
     assert data["company_role"] == str(role.pk) or data["company_role"] == role.pk
-
-
-@pytest.mark.django_db
-def test_user_serializer_phone_is_not_required_on_input():
-    company = Company.objects.create(name="HandyMan")
-    role = CompanyRole.objects.create(company=company, name="user")
-
-    # Prepare payload similar to what the serializer would accept for updates
-    payload = {
-        "username": "",
-        "email": "hello@world.ca",
-        "first_name": "hello",
-        "last_name": "world",
-        # phone omitted on purpose
-        "mobile": "111-111-1111",
-        "company": str(company.pk),
-        "company_role": str(role.pk),
-    }
-
-    # Initialize for creation/update-like validation (no instance)
-    serializer = UserSerializer(data=payload)
-    # UserDetailsSerializer usually does partial updates; allow partial to avoid requiring all default fields
-    assert serializer.is_valid(raise_exception=True) is True
 
 
 @pytest.mark.django_db
