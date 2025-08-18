@@ -1,5 +1,4 @@
 import pytest
-
 from apps.account.models import Company, CompanyRole, User
 
 

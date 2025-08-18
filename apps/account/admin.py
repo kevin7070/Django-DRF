@@ -26,7 +26,6 @@ class UserAdmin(BaseUserAdmin):
             "Additional Info",
             {
                 "fields": (
-                    "phone",
                     "mobile",
                     "profile_picture",
                     "company",
@@ -44,7 +43,6 @@ class UserAdmin(BaseUserAdmin):
                 "fields": (
                     "email",
                     "username",
-                    "phone",
                     "mobile",
                     "profile_picture",
                     "company",
@@ -58,8 +56,11 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-    list_display = ("email", "username", "phone", "is_staff", "is_superuser")
-    search_fields = ("email", "username", "phone")
+    list_display = ("email", "username", "is_staff", "is_superuser")
+    search_fields = (
+        "email",
+        "username",
+    )
     ordering = ("email",)
 
 

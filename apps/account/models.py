@@ -94,8 +94,9 @@ class User(UUIDBaseModel, AbstractUser):
         related_name="users",
     )
     email = models.EmailField(unique=True, null=False, blank=False)  # unique
-    phone = models.CharField(max_length=12, null=True, blank=True)
-    mobile = models.CharField(max_length=12, null=True, blank=True)
+    mobile = models.CharField(
+        max_length=12, null=True, blank=True
+    )  # todo: api validation
     profile_picture = models.ImageField(
         upload_to=upload_path(use_day=False), null=True, blank=True
     )
