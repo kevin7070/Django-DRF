@@ -117,8 +117,7 @@ class Company(UUIDBaseModel):
     verification_document = models.FileField(
         upload_to=upload_path(use_day=False), blank=True, null=True
     )
-    is_verified = models.BooleanField(default=False)
-    verified = models.DateTimeField(null=True, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
     verified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
@@ -126,6 +125,10 @@ class Company(UUIDBaseModel):
         on_delete=models.SET_NULL,
         related_name="verified_companies",
     )
+
+    @property
+    def is_verified(self) -> bool:
+        return self.verified_at is not None
 
     def __str__(self):
         return self.name

@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from apps.account.models import Company, CompanyAddress, CompanyRole
+from rest_framework import serializers
 
 
 class CompanyAddressSerializer(serializers.ModelSerializer):
@@ -52,8 +51,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "id",
             "name",
             "verification_document",
-            "is_verified",
-            "verified",
+            "verified_at",
             "verified_by",
             "addresses",
             "mailing_address",

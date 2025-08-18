@@ -68,14 +68,13 @@ class UserAdmin(BaseUserAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "is_verified",
-        "verified",
+        "verified_at",
         "verified_by",
         "has_mailing_address",
     )
-    list_filter = ("is_verified", "verified_by")
+    list_filter = ("verified_at", "verified_by")
     search_fields = ("name",)
-    readonly_fields = ("verified", "verified_by")
+    readonly_fields = ("verified_at", "verified_by")
 
     def has_mailing_address(self, obj):
         return obj.addresses.filter(is_mailing_address=True).exists()
