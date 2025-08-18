@@ -4,11 +4,17 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from apps.account.constants import USER_PERMISSION_DEFAULT
-from apps.utils.base_model import UUIDBaseModel, UUIDTimestampModel
+from apps.utils.base_model import UUIDBaseModel
+from apps.utils.uploads import upload_path
 
 
 def default_role_permissions():
-    # return a fresh copy so each instance gets its own dict
+    """
+    Return a copy of the default role permissions.
+
+    :return: copy of USER_PERMISSION_DEFAULT
+    :rtype: dict
+    """
     return USER_PERMISSION_DEFAULT.copy()
 
 
@@ -16,6 +22,21 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def create_user(self, username, email, password, **extra_fields):
+        """
+        Creates a new user with the given username, email and password.
+
+        Args:
+            username (str): The username of the user.
+            email (str): The email of the user.
+            password (str): The password of the user.
+            **extra_fields (dict): Additional fields for the user.
+
+        Returns:
+            User: The newly created user.
+
+        Raises:
+            ValueError: If username, email or password is not provided.
+        """
         if not username:
             raise ValueError("Username is required")
         if not email:
@@ -31,6 +52,21 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password, **extra_fields):
+        """
+        Creates a new superuser with the given username, email and password.
+
+        Args:
+            username (str): The username of the user.
+            email (str): The email of the user.
+            password (str): The password of the user.
+            **extra_fields (dict): Additional fields for the user.
+
+        Returns:
+            User: The newly created superuser.
+
+        Raises:
+            ValueError: If is_staff or is_superuser is not True in extra_fields.
+        """
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -61,11 +97,13 @@ class User(UUIDBaseModel, AbstractUser):
     phone = models.CharField(max_length=12, null=True, blank=True)
     mobile = models.CharField(max_length=12, null=True, blank=True)
     profile_picture = models.ImageField(
-        upload_to="user/profile_picture/", null=True, blank=True
+        upload_to=upload_path(use_day=False), null=True, blank=True
     )
 
+    # Custom user manager
     objects = UserManager()
 
+    # username is a required field
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
@@ -73,10 +111,10 @@ class User(UUIDBaseModel, AbstractUser):
         return self.username
 
 
-class Company(UUIDTimestampModel):
+class Company(UUIDBaseModel):
     name = models.CharField(max_length=100)
     verification_document = models.FileField(
-        upload_to="company/verification_document/", blank=True, null=True
+        upload_to=upload_path(use_day=False), blank=True, null=True
     )
     is_verified = models.BooleanField(default=False)
     verified = models.DateTimeField(null=True, blank=True)
@@ -92,7 +130,7 @@ class Company(UUIDTimestampModel):
         return self.name
 
 
-class CompanyAddress(UUIDTimestampModel):
+class CompanyAddress(UUIDBaseModel):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name="addresses"
     )
@@ -108,6 +146,15 @@ class CompanyAddress(UUIDTimestampModel):
 
     @property
     def full_address(self):
+        """
+        Returns a string representation of the full address of the company address.
+
+        The full address is a string representation of the address, apt_suite, city, province, postal_code, and country.
+        The parts are concatenated using commas and any empty or None parts are filtered out.
+
+        Returns:
+            str: A string representation of the full address.
+        """
         parts = [self.address]
         if self.apt_suite:
             parts.append(self.apt_suite)
@@ -118,17 +165,24 @@ class CompanyAddress(UUIDTimestampModel):
         return self.full_address
 
 
-class CompanyRole(UUIDTimestampModel):
+class CompanyRole(UUIDBaseModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="roles")
     name = models.CharField(max_length=50)  # e.g., admin, user, vip
     permissions = models.JSONField(default=default_role_permissions)
     is_protected = models.BooleanField(default=False)
 
     def has_perm(self, module: str, action: str) -> bool:
-        return self.permissions.get(module, {}).get(action, False)
+        """
+        Check if the given module and action are allowed for the user's company role.
 
-    # usage
-    # check if user.company_role and user.company_role.has_perm("product", "edit")
+        Args:
+            module (str): The module to check permissions for.
+            action (str): The action to check permissions for.
+
+        Returns:
+            bool: True if the module and action are allowed, False otherwise.
+        """
+        return self.permissions.get(module, {}).get(action, False)
 
     def __str__(self):
         return f"{self.company.name} - {self.name}"
