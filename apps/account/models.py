@@ -79,26 +79,20 @@ class UserManager(BaseUserManager):
 
 
 class User(UUIDBaseModel, AbstractUser):
-    company = models.ForeignKey(
-        "Company",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="users",
-    )
-    company_role = models.ForeignKey(
-        "CompanyRole",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="users",
-    )
     email = models.EmailField(unique=True, null=False, blank=False)  # unique
     mobile = models.CharField(
         max_length=12, null=True, blank=True
     )  # todo: api validation
     profile_picture = models.ImageField(
         upload_to=upload_path(use_day=False), null=True, blank=True
+    )
+    # Many-to-many companies via membership payload
+    companies = models.ManyToManyField(
+        "Company",
+        through="CompanyMembership",
+        through_fields=("user", "company"),
+        related_name="users",
+        blank=True,
     )
 
     # Custom user manager
@@ -110,6 +104,60 @@ class User(UUIDBaseModel, AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+# Company membership through model
+class CompanyMembership(UUIDBaseModel):
+    """User ↔ Company membership with role and status payload."""
+
+    PENDING = "pending"
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (ACTIVE, "Active"),
+        (INACTIVE, "Inactive"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="memberships",
+    )
+    company = models.ForeignKey(
+        "Company",
+        on_delete=models.CASCADE,
+        related_name="memberships",
+    )
+    role = models.ForeignKey(
+        "CompanyRole",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="members",
+    )
+
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default=ACTIVE)
+    is_primary = models.BooleanField(default=False)
+    joined_at = models.DateTimeField(auto_now_add=True)
+    invited_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="invitations_sent",
+    )
+
+    class Meta:
+        unique_together = [("user", "company")]
+        indexes = [models.Index(fields=["user", "company"])]
+
+    def __str__(self):
+        role_name = self.role.name if self.role else "no-role"
+        return f"{self.user} @ {self.company} ({role_name})"
+
+    def has_perm(self, module: str, action: str) -> bool:
+        return self.role.has_perm(module, action) if self.role else False
 
 
 class Company(UUIDBaseModel):
