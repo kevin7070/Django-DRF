@@ -1,7 +1,6 @@
+from apps.account.models import User
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
-
-from apps.account.models import User
 
 
 class UserSerializer(UserDetailsSerializer):
@@ -10,8 +9,6 @@ class UserSerializer(UserDetailsSerializer):
     class Meta(UserDetailsSerializer.Meta):
         model = User
         fields = UserDetailsSerializer.Meta.fields + (
-            "company",
-            "company_role",
             "phone",
             "mobile",
             "profile_picture",

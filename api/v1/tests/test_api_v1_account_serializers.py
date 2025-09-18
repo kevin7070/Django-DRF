@@ -1,7 +1,7 @@
 import pytest
 from api.v1.account.serializers import UserSerializer
 from api.v1.account.serializers_base import CompanyAddressSerializer
-from apps.account.models import Company, CompanyAddress, CompanyRole, User
+from apps.account.models import Company, CompanyAddress, User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework.exceptions import ValidationError
 
@@ -87,16 +87,11 @@ def test_allow_update_same_instance():
 
 @pytest.mark.django_db
 def test_user_serializer_includes_expected_fields():
-    company = Company.objects.create(name="HandyMan")
-    role = CompanyRole.objects.create(company=company, name="admin")
-
     user = User.objects.create_user(
-        username="helloworld",
         email="hello@world.ca",
         password="pass1234",
+        username="helloworld",
         mobile="222-222-2222",
-        company=company,
-        company_role=role,
     )
 
     serializer = UserSerializer(instance=user)
@@ -104,15 +99,13 @@ def test_user_serializer_includes_expected_fields():
 
     # Fields from dj_rest_auth.UserDetailsSerializer are typically:
     # ("pk", "username", "email", "first_name", "last_name")
-    # Our subclass adds: company, company_role, mobile, profile_picture
+    # Our subclass adds: mobile, profile_picture
     for key in [
         "pk",
         "username",
         "email",
         "first_name",
         "last_name",
-        "company",
-        "company_role",
         "mobile",
         "profile_picture",
     ]:
@@ -123,36 +116,26 @@ def test_user_serializer_includes_expected_fields():
 
 @pytest.mark.django_db
 def test_user_serializer_relations_are_primary_keys():
-    company = Company.objects.create(name="HandyMan")
-    role = CompanyRole.objects.create(company=company, name="staff")
+    # Company relations moved to memberships; ensure serializer still works without them
     user = User.objects.create_user(
-        username="helloworld",
         email="hello@world.ca",
         password="pass1234",
-        company=company,
-        company_role=role,
+        username="helloworld",
     )
-
     serializer = UserSerializer(instance=user)
     data = serializer.data
-
-    assert data["company"] == str(company.pk) or data["company"] == company.pk
-    assert data["company_role"] == str(role.pk) or data["company_role"] == role.pk
+    assert data["pk"] == str(user.pk) or data["pk"] == user.pk
+    assert data["email"] == "hello@world.ca"
 
 
 @pytest.mark.django_db
 def test_user_serializer_profile_picture_serializes_path_when_present():
-    company = Company.objects.create(name="HandyMan")
-    role = CompanyRole.objects.create(company=company, name="uploader")
-
     pic = SimpleUploadedFile("avatar.png", b"fakepngbytes", content_type="image/png")
 
     user = User.objects.create_user(
-        username="helloworld",
         email="hello@world.ca",
         password="pass1234",
-        company=company,
-        company_role=role,
+        username="helloworld",
         profile_picture=pic,
     )
 
